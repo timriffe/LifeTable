@@ -73,7 +73,8 @@ function(Nx,Dx,Mx,ages="auto",type="single-age",axmethod="keyfitz",sex="female",
 	if (ages=="auto"){
 		ages <- cumsum(Widths)-Widths
 	}
-	ages.mids.pre <- ages + Widths/2; ages.mids.pre[1] <- .1
+	ages.mids.pre <- ages + Widths/2
+	ages.mids.pre[1] <- .1
 	
 	if(missing("Nx")==FALSE & missing("Dx")==FALSE & mxsmooth==TRUE){
 		# Giancarlo's package. I recommend either supplying an already-smoothed Mx vector (for complete control)
@@ -90,6 +91,7 @@ function(Nx,Dx,Mx,ages="auto",type="single-age",axmethod="keyfitz",sex="female",
 		logMx[2:N] <- stats:::predict(stats:::loess(logMx~ages.mids.pre,span=span,control=stats:::loess.control(surface="interpolate")),newdata=ages[2:N])
 		Mx <- exp(logMx)
 	}
+
 	# the link identity. we assume that the lifetable mx is equal to the central death rate.
 	mx <- Mx
 	
@@ -146,22 +148,23 @@ function(Nx,Dx,Mx,ages="auto",type="single-age",axmethod="keyfitz",sex="female",
 	qx[N] <- 1
 	
 	# can't have qx > 1, so we impute 1s where necessary: hopefully only at the penultimate, as the case may be
-	if (max(qx)>1) qx[which(qx>1)] <- 1
+	qx[qx > 1] <- 1
 	px <- 1-qx
-	lx <- radix
+	
+	lx <- Lx <- vector(length=N)
+	lx[1] <- radix
 	for (i in 2:N) {
 		lx[i] <- lx[i-1]*px[i-1] 
 	}
 	
 	dx <- -diff(lx)
 	dx[N] <- lx[N]
-	Lx <- NULL
-	for (i in 1:(N-1)){
-		Lx[i] <- Widths[i]*lx[i+1] + ax[i]*dx[i]
-	}
+	
+	Lx[1:(N-1)] <- Widths[1:(N-1)]*lx[2:N] + ax[1:(N-1)]*dx[1:(N-1)]
 	Lx[N] <- lx[N]/mx[N]
 	Lx[is.infinite(Lx)] <- 1
 	Lx[is.na(Lx)] <- 0
+	
 	Tx <- rev(cumsum(rev(Lx)))
 	ex <- Tx/lx
 	
@@ -177,19 +180,13 @@ function(Nx,Dx,Mx,ages="auto",type="single-age",axmethod="keyfitz",sex="female",
 	# have much affect, and will have no effect if indeed there are no people in that age category
 	
 	# Sx is the pertinent output for projections
-	Sx <- rep(NA,N)
-	for (i in 1:(N-1)) { 
-		Sx[i] <-(Lx[i+1]/Widths[i+1])/(Lx[i]/Widths[i])
-	}
-	Sx[N] <- Tx[N]/Tx[(N-1)]
+    Sx <- vector(length = N)
+	Sx[1:(N-1)] <- (Lx[2:N]/Widths[2:N])/(Lx[1:(N-1)]/Widths[1:(N-1)])
+	Sx[N]       <- Tx[N]/Tx[(N-1)]
+	# two not-very satisfying, and possibly redundant, substitutions:
+	Sx[Lx == 0]   <- 0
+	Sx[is.na(Sx)] <- 0
 	
-	# two not-very satisfying substitutions:
-	if (min(Lx)==0) {
-		Sx[which(Lx==0)] <- 0
-	}
-	if (any(is.na(Sx))) {
-		Sx[is.na(Sx)] <- 0
-	}
 	
 	# another calculation of e0:
 	e0estimates <- matrix(nrow=1,ncol=3)
@@ -198,7 +195,7 @@ function(Nx,Dx,Mx,ages="auto",type="single-age",axmethod="keyfitz",sex="female",
 	e0estimates[3] <- e0lx <- sum(lx*Widths)/radix-.5
 	colnames(e0estimates) <- c("T0/l0","sum((ages+ax)*dx)","sum(lx)-.5")
 	rownames(e0estimates) <- "e0"
-# several estimates of edagger (the first one is probably the best)
+    # several estimates of edagger (the first one is probably the best)
 	edaggerestimate <- function(lx,ex,dx,mx,ax){
 		N <- length(lx)
 		ed1 <- ed2 <- ed3 <- ed4 <- vector(length=N)
