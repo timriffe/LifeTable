@@ -196,33 +196,35 @@ function(Nx,Dx,Mx,ages="auto",type="single-age",axmethod="keyfitz",sex="female",
 	colnames(e0estimates) <- c("T0/l0","sum((ages+ax)*dx)","sum(lx)-.5")
 	rownames(e0estimates) <- "e0"
     # several estimates of edagger (the first one is probably the best)
-	edaggerestimate <- function(lx,ex,dx,mx,ax){
-		N <- length(lx)
-		ed1 <- ed2 <- ed3 <- ed4 <- vector(length=N)
-		endterm <- 1/lx[N]*dx[N]*.5*ex[N]
-		for (i in 1:N){
-			ed2[i] <- (1/lx[i])*sum(lx[i:N]*mx[i:N]*ex[i:N])
-			ed3[i] <- (1/(2*lx[i]))*sum(dx[i:(N-1)]*(ex[i:(N-1)]+ex[(i+1):N]))
-			ed4[i] <- (1/lx[i])*sum(dx[i:(N-1)]*((1-ax[i:(N-1)])+ex[(i+1):N]))
-			sumthing <- 0
-			if (i < 111){
-				for (j in i:(N-1)){
-					sumthing <- sumthing+(dx[j]*(ex[j+1]+1-ax[j]))
-				}
-			}
-			ed1[i] <- (1/lx[i])*sumthing+endterm
-		}
-		edagger <- matrix(cbind(ed1,ed2,ed3,ed4),ncol=4,nrow=N)
-		return(edagger)
-	}
-	edagger <- edaggerestimate(lx,ex,dx,mx,ax)
-	colnames(edagger) <- c("formula1","formula2","formula3","formula4")
-	rownames(edagger) <- Age
+
+# edagger deprecated for now, to be reexamined
+#	edaggerestimate <- function(lx,ex,dx,mx,ax){
+#		N <- length(lx)
+#		ed1 <- ed2 <- ed3 <- ed4 <- vector(length=N)
+#		endterm <- 1/lx[N]*dx[N]*.5*ex[N]
+#		for (i in 1:N){
+#			ed2[i] <- (1/lx[i])*sum(lx[i:N]*mx[i:N]*ex[i:N])
+#			ed3[i] <- (1/(2*lx[i]))*sum(dx[i:(N-1)]*(ex[i:(N-1)]+ex[(i+1):N]))
+#			ed4[i] <- (1/lx[i])*sum(dx[i:(N-1)]*((1-ax[i:(N-1)])+ex[(i+1):N]))
+#			sumthing <- 0
+#			if (i < 111){
+#				for (j in i:(N-1)){
+#					sumthing <- sumthing+(dx[j]*(ex[j+1]+1-ax[j]))
+#				}
+#			}
+#			ed1[i] <- (1/lx[i])*sumthing+endterm
+#		}
+#		edagger <- matrix(cbind(ed1,ed2,ed3,ed4),ncol=4,nrow=N)
+#		return(edagger)
+#	}
+#	edagger <- edaggerestimate(lx,ex,dx,mx,ax)
+#	colnames(edagger) <- c("formula1","formula2","formula3","formula4")
+#	rownames(edagger) <- Age
 	# pasting together a lifetable object
 	LT <- data.frame(cbind("Age"=Age, "ages"=ages, "mx"=round(mx,4),"ax"=round(ax,digits=4),
 					"qx"=round(qx,4), "px"=round(px,4), "lx"=round(lx,4),
 					"dx"=round(dx,4), "Lx"=round(Lx,4), "Tx"=round(Tx,4),"ex"=round(ex,4)))
 	# both LT as well as the individual pieces (not rounded) can be called
-	return(list(LT=LT,Age=Age,ages=ages,mx=mx,ax=ax,qx=qx,lx=lx,dx=dx,Lx=Lx,Tx=Tx,ex=ex,Sx=Sx,Widths=Widths,e0est=e0estimates,edagger=edagger))
+	return(list(LT=LT,Age=Age,ages=ages,mx=mx,ax=ax,qx=qx,lx=lx,dx=dx,Lx=Lx,Tx=Tx,ex=ex,Sx=Sx,Widths=Widths,e0est=e0estimates))
 }
 
