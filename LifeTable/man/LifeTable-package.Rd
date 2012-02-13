@@ -10,7 +10,7 @@ The main function, \code{LT()}, is rather versatile, accepting single-age or 5-y
 \tabular{ll}{
 Package: \tab LifeTable\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
+Version: \tab 1.0.2\cr
 Date: \tab 2010-12-23\cr
 License: \tab General Public\cr
 LazyLoad: \tab yes\cr
