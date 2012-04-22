@@ -1,8 +1,8 @@
 Package: LifeTable
 Type: Package
 Title: LifeTable, a package with a small set of useful lifetable functions.
-Version: 1.0.2
-Date: 2012-02-13
+Version: 1.0.3
+Date: 2012-04-21
 Author: Tim Riffe
 Maintainer: Tim Riffe <tim.riffe@gmail.com>
 Description: The main function, \code{LT()}, is rather versatile, accepting single-age or 5-year abridged data, and with a variety of optional arguments. There is also a sub-function, \code{axEstimate()}, which serves as a wrapper for 4 different a(x) estimation methods. All functions take as their basic argument the M(x) vector, although the \code{LT()} function lets you start simply with a vector of exposures (Nx) and a vector of death counts (Dx) (better for smoothing). From that, all the other lifetable functions are estimated using a series of identities. Either an entire composed and rounded table can be returned, or else the individual un-rounded components. See further examples under individual function pages. Example data is also provided, as extracted from the Human Mortality Database in May, 2010. These data are for Ukrainian males in 1965, and are given in single ages and in 5-year abridged ages as well.
