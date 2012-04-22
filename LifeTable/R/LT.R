@@ -82,18 +82,18 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 	if(!missing(Nx) & !missing(Dx) & mxsmooth){
 		# Giancarlo's package. I recommend either supplying an already-smoothed Mx vector (for complete control)
 		# or else supplying Dx and Nx and setting mxsmooth to TRUE. 
-		require("MortalitySmooth")
-		fitBIC 		<- Mort1Dsmooth(x = ages.mids.pre, y = Dx, offset = log(Nx))
+		#require("MortalitySmooth")- now imported in NAMESPACE and DESCRIPTION
+		fitBIC 			<- MortalitySmooth::Mort1Dsmooth(x = ages.mids.pre, y = Dx, offset = log(Nx))
 		Mx[2:N] 		<- (fitted(fitBIC) / Nx)[2:N]
 	}
 	
 	if(missing(Nx) & missing(Dx) & mxsmooth){
 		Verb(verbose,"mxsmooth was specified as TRUE, but since Mx was supplied directly, \nthere are no implicit weights (Nx). Function used a loess smoother \nto smooth out the Mx, but please be wary.")
 		span 			<- ifelse(N > 30, .15, .4)
-		logMx 		<- log(Mx)
+		logMx 			<- log(Mx)
 		logMx[is.infinite(logMx)] <- NA
-		logMx[2:N] 	<- stats:::predict(stats:::loess(logMx ~ ages.mids.pre, span = span, control = stats:::loess.control(surface = "interpolate")), newdata = ages[2:N])
-		Mx 			<- exp(logMx)
+		logMx[2:N] 		<- stats:::predict(stats:::loess(logMx ~ ages.mids.pre, span = span, control = stats:::loess.control(surface = "interpolate")), newdata = ages[2:N])
+		Mx 				<- exp(logMx)
 	}
 
 	# the link identity. we assume that the lifetable mx is equal to the central death rate.
