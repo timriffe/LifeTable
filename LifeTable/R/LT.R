@@ -82,7 +82,8 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 	if(!missing(Nx) & !missing(Dx) & mxsmooth){
 		# Giancarlo's package. I recommend either supplying an already-smoothed Mx vector (for complete control)
 		# or else supplying Dx and Nx and setting mxsmooth to TRUE. 
-		#require("MortalitySmooth")- now imported in NAMESPACE and DESCRIPTION
+		require("MortalitySmooth")  #- now imported in NAMESPACE and DESCRIPTION, but for some reason
+									# MortalitySmooth's own dependencies weren't loading...
 		fitBIC 			<- MortalitySmooth:::Mort1Dsmooth(x = ages.mids.pre, y = Dx, offset = log(Nx))
 		Mx[2:N] 		<- (fitted(fitBIC) / Nx)[2:N]
 	}
