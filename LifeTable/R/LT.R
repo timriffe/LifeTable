@@ -83,7 +83,7 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 		# Giancarlo's package. I recommend either supplying an already-smoothed Mx vector (for complete control)
 		# or else supplying Dx and Nx and setting mxsmooth to TRUE. 
 		#require("MortalitySmooth")- now imported in NAMESPACE and DESCRIPTION
-		fitBIC 			<- MortalitySmooth::Mort1Dsmooth(x = ages.mids.pre, y = Dx, offset = log(Nx))
+		fitBIC 			<- MortalitySmooth:::Mort1Dsmooth(x = ages.mids.pre, y = Dx, offset = log(Nx))
 		Mx[2:N] 		<- (fitted(fitBIC) / Nx)[2:N]
 	}
 	
