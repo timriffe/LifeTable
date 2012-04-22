@@ -43,10 +43,10 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 	N <- length(Mx) # Mx <- mxmat[1,]
 	
 	# identify single-age or abridged table
-	types <- c("single-age", "abridged", "other")
-	typesmenu <- c("single-age (0,1,2,3....110+)", "abridged (0,1-4,5-9...)", "other?")
-	if (! type %in% types | missing(type)) {
-		type <- types[menu(typesmenu, graphics = TRUE, title = "pick relevant lifetable type")]
+	types 	<- c("single-age", "abridged", "other")
+	typesmenu 	<- c("single-age (0,1,2,3....110+)", "abridged (0,1-4,5-9...)", "other?")
+	if ((! type %in% types) | missing(type)) {
+		type 	<- types[menu(typesmenu, graphics = TRUE, title = "pick relevant lifetable type")]
 	}
 	if (type == "other") {
 		cat("\nsorry, I only have the first 2 kinds of age-categories implemented so far\n")
@@ -55,65 +55,65 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 	
 	# assign interval widths, including the open interval
 	if (is.character(n) & n == "auto" & type == "abridged"){
-		Widths <- c(1, 4, rep(5, N - 2))
+		Widths 		<- c(1, 4, rep(5, N - 2))
 	}
 	if (is.character(n) & n == "auto" & type == "single-age"){
-		Widths <- rep(1, N)
+		Widths 		<- rep(1, N)
 	}
 	if (is.numeric(n)){	
-		Widths <- n
+		Widths 		<- n
 		Verb(verbose, "used user-supplied widths.If there's an error, be sure this vector is of the same length as Nx,Dx")
 	}
 	
 	if (ages == "auto" & type == "abridged") {
-		Age <- c(0, paste(c(1, seq(from = 5, by = 5, length = (N - 3))), "-",
+		Age 			<- c(0, paste(c(1, seq(from = 5, by = 5, length = (N - 3))), "-",
 						c(4, seq(from = 9, by = 5, length = (N - 3))), sep = ""), paste(((N-2) * 5), "+", sep = ""))
 	}
 	if (ages == "auto" & type == "single-age") {
-		Age <- c(seq(0, N - 2), paste(N - 1, "+", sep = ""))
+		Age 			<- c(seq(0, N - 2), paste(N - 1, "+", sep = ""))
 	}
 	# redefine term ages for later use.
 	if (ages == "auto"){
-		ages <- cumsum(Widths) - Widths
+		ages 			<- cumsum(Widths) - Widths
 	}
-	ages.mids.pre <- ages + Widths/2
-	ages.mids.pre[1] <- .1
+	ages.mids.pre 		<- ages + Widths / 2
+	ages.mids.pre[1] 	<- .1
 	
 	if(!missing(Nx) & !missing(Dx) & mxsmooth){
 		# Giancarlo's package. I recommend either supplying an already-smoothed Mx vector (for complete control)
 		# or else supplying Dx and Nx and setting mxsmooth to TRUE. 
 		require("MortalitySmooth")
-		fitBIC <- Mort1Dsmooth(x = ages.mids.pre, y = Dx, offset = log(Nx))
-		Mx[2:N] <- (fitted(fitBIC) / Nx)[2:N]
+		fitBIC 		<- Mort1Dsmooth(x = ages.mids.pre, y = Dx, offset = log(Nx))
+		Mx[2:N] 		<- (fitted(fitBIC) / Nx)[2:N]
 	}
 	
 	if(missing(Nx) & missing(Dx) & mxsmooth){
 		Verb(verbose,"mxsmooth was specified as TRUE, but since Mx was supplied directly, \nthere are no implicit weights (Nx). Function used a loess smoother \nto smooth out the Mx, but please be wary.")
-		span <- ifelse(N > 30, .15, .4)
-		logMx <- log(Mx)
+		span 			<- ifelse(N > 30, .15, .4)
+		logMx 		<- log(Mx)
 		logMx[is.infinite(logMx)] <- NA
-		logMx[2:N] <- stats:::predict(stats:::loess(logMx ~ ages.mids.pre, span = span, control = stats:::loess.control(surface = "interpolate")), newdata = ages[2:N])
-		Mx <- exp(logMx)
+		logMx[2:N] 	<- stats:::predict(stats:::loess(logMx ~ ages.mids.pre, span = span, control = stats:::loess.control(surface = "interpolate")), newdata = ages[2:N])
+		Mx 			<- exp(logMx)
 	}
 
 	# the link identity. we assume that the lifetable mx is equal to the central death rate.
 	mx <- Mx
 	
 	# these later 3 imputations should not be needed, but are there just in case.
-	mx[is.na(mx)] <- 0
-	mx[is.infinite(mx)] <- 0
+	mx[is.na(mx)] 		<- 0
+	mx[is.infinite(mx)] 	<- 0
 	
 	# we don't want 0s in m(x) for calculating a(x), because a(x) (except midpoint) is iterative
 	# and we'd erroneously bring down neighboring age's ax values if with zeros.
 	# for later calulations, the zeros are taken 'as-is'
 	if (length(axmethod) == 1 & min(mx) == 0){
-		Ind <- which(mx == 0)
+		Ind <- mx == 0
 		
 		Verb(verbose, paste("\n\n*there were some ages (", ages[Ind], ") with no mortality.\nValues are imputed for calculating a(x), but the zeros are kept for the rest of the lifetable.\n"))
 		span <- ifelse(N > 30,.15,.4)
 		logMx <- log(Mx)
 		logMx[is.infinite(logMx)] <- NA
-		Imp <- exp(stats:::predict(stats:::loess(logMx~ages.mids.pre,span=span,control=stats:::loess.control(surface="interpolate")),newdata=ages))[Ind]
+		Imp <- exp(stats:::predict(stats:::loess(logMx ~ ages.mids.pre, span = span, control = stats:::loess.control(surface = "interpolate")), newdata = ages))[Ind]
 		if (any(is.na(Imp))){
 			Imp <- exp(stats:::spline(ages.mids.pre, logMx, xmin = 0, xmax = max(ages))$y[Ind])
 		}
@@ -148,29 +148,29 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 		mx[Ind] <- 0
 	}
 	
-	qx <- (Widths * mx) / (1 + (Widths - ax) * mx)
-	qx[N] <- 1
+	qx 			<- (Widths * mx) / (1 + (Widths - ax) * mx)
+	qx[N] 		<- 1
 	
 	# can't have qx > 1, so we impute 1s where necessary: hopefully only at the penultimate, as the case may be
-	qx[qx > 1] <- 1
-	px <- 1 - qx
+	qx[qx > 1] 	<- 1
+	px 			<- 1 - qx
 	
-	lx <- Lx <- vector(length = N)
-	lx[1] <- radix
+	lx 	<- Lx 	<- vector(length = N)
+	lx[1] 		<- radix
 	for (i in 2:N) {
-		lx[i] <- lx[i - 1] * px[i - 1] 
+		lx[i] 	<- lx[i - 1] * px[i - 1] 
 	}
 	
-	dx <- -diff(lx)
-	dx[N] <- lx[N]
+	dx 			<- -diff(lx)
+	dx[N] 		<- lx[N]
 	
-	Lx[1:(N-1)] <- Widths[1:(N-1)] * lx[2:N] + ax[1:(N-1)] * dx[1:(N-1)]
-	Lx[N] <- lx[N] / mx[N]
+	Lx[1:(N - 1)] 	<- Widths[1:(N - 1)] * lx[2:N] + ax[1:(N - 1)] * dx[1:(N - 1)]
+	Lx[N] 		<- lx[N] / mx[N]
 	Lx[is.infinite(Lx)] <- 1
-	Lx[is.na(Lx)] <- 0
+	Lx[is.na(Lx)] 	<- 0
 	
-	Tx <- rev(cumsum(rev(Lx)))
-	ex <- Tx / lx
+	Tx 			<- rev(cumsum(rev(Lx)))
+	ex 			<- Tx / lx
 	
 	# any missing ex values are replaced by the corresponding ax values 
 	if (any(is.na(ex))) {
@@ -184,19 +184,19 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 	# have much affect, and will have no effect if indeed there are no people in that age category
 	
 	# Sx is the pertinent output for projections
-    Sx <- vector(length = N)
-	Sx[1:(N - 1)] <- (Lx[2:N] / Widths[2:N]) / (Lx[1:(N-1)] / Widths[1:(N - 1)])
-	Sx[N]       <- Tx[N] / Tx[(N - 1)]
+    	Sx 			<- vector(length = N)
+	Sx[1:(N - 1)] 	<- (Lx[2:N] / Widths[2:N]) / (Lx[1:(N-1)] / Widths[1:(N - 1)])
+	Sx[N]       	<- Tx[N] / Tx[(N - 1)]
 	# two not-very satisfying, and possibly redundant, substitutions:
-	Sx[Lx == 0]   <- 0
-	Sx[is.na(Sx)] <- 0
+	Sx[Lx == 0]   	<- 0
+	Sx[is.na(Sx)] 	<- 0
 	
 	
 	# another calculation of e0:
-	e0estimates <- matrix(nrow = 1, ncol = 3)
-	e0estimates[1] <- e0LT <- ex[1]
-	e0estimates[2] <- e0dx <- sum((ages + ax) * dx) / radix
-	e0estimates[3] <- e0lx <- sum(lx * Widths) / radix - .5
+	e0estimates 	<- matrix(nrow = 1, ncol = 3)
+	e0estimates[1] 	<- e0LT 	<- ex[1]
+	e0estimates[2] 	<- e0dx 	<- sum((ages + ax) * dx) / radix
+	e0estimates[3] 	<- e0lx 	<- sum(lx * Widths) / radix - .5
 	colnames(e0estimates) <- c("T0/l0", "sum((ages+ax)*dx)", "sum(lx)-.5")
 	rownames(e0estimates) <- "e0"
     # several estimates of edagger (the first one is probably the best)
