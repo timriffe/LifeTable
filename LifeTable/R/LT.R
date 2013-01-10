@@ -1,3 +1,4 @@
+
 LT <-
 function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", sex = "female", 
 		mxsmooth = TRUE, axsmooth = TRUE, n = "auto", radix = 1, verbose = TRUE){
@@ -54,15 +55,18 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 	}
 	
 	# assign interval widths, including the open interval
-	if (is.character(n) & n == "auto" & type == "abridged"){
-		Widths 		<- c(1, 4, rep(5, N - 2))
-	}
-	if (is.character(n) & n == "auto" & type == "single-age"){
-		Widths 		<- rep(1, N)
-	}
+    if (is.character(n)){
+        if (n == "auto" & type == "abridged"){
+            Widths      <- c(1, 4, rep(5, N - 2))
+        }
+        if (n == "auto" & type == "single-age"){
+            Widths      <- rep(1, N)
+        }    
+    }
+	
 	if (is.numeric(n)){	
 		Widths 		<- n
-		Verb(verbose, "used user-supplied widths.If there's an error, be sure this vector is of the same length as Nx,Dx")
+		Verb(verbose, "used user-supplied widths. If there is an error, be sure this vector is of the same length as Nx,Dx")
 	}
 	
 	if (ages == "auto" & type == "abridged") {
@@ -81,10 +85,8 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 	
 	if(!missing(Nx) & !missing(Dx) & mxsmooth){
 		# Giancarlo's package. I recommend either supplying an already-smoothed Mx vector (for complete control)
-		# or else supplying Dx and Nx and setting mxsmooth to TRUE. 
-		require("MortalitySmooth")  #- now imported in NAMESPACE and DESCRIPTION, but for some reason
-									# MortalitySmooth's own dependencies weren't loading...
-		fitBIC 			<- MortalitySmooth:::Mort1Dsmooth(x = ages.mids.pre, y = Dx, offset = log(Nx))
+		# or else supplying Dx and Nx and setting mxsmooth to TRUE.
+		fitBIC 			<- Mort1Dsmooth(x = ages.mids.pre, y = Dx, offset = log(Nx))
 		Mx[2:N] 		<- (fitted(fitBIC) / Nx)[2:N]
 	}
 	
@@ -93,7 +95,7 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 		span 			<- ifelse(N > 30, .15, .4)
 		logMx 			<- log(Mx)
 		logMx[is.infinite(logMx)] <- NA
-		logMx[2:N] 		<- stats:::predict(stats:::loess(logMx ~ ages.mids.pre, span = span, control = stats:::loess.control(surface = "interpolate")), newdata = ages[2:N])
+		logMx[2:N] 		<- predict(loess(logMx ~ ages.mids.pre, span = span, control = loess.control(surface = "interpolate")), newdata = ages[2:N])
 		Mx 				<- exp(logMx)
 	}
 
@@ -102,7 +104,7 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 	
 	# these later 3 imputations should not be needed, but are there just in case.
 	mx[is.na(mx)] 		<- 0
-	mx[is.infinite(mx)] 	<- 0
+	mx[is.infinite(mx)] <- 0
 	
 	# we don't want 0s in m(x) for calculating a(x), because a(x) (except midpoint) is iterative
 	# and we'd erroneously bring down neighboring age's ax values if with zeros.
@@ -114,9 +116,9 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 		span <- ifelse(N > 30,.15,.4)
 		logMx <- log(Mx)
 		logMx[is.infinite(logMx)] <- NA
-		Imp <- exp(stats:::predict(stats:::loess(logMx ~ ages.mids.pre, span = span, control = stats:::loess.control(surface = "interpolate")), newdata = ages))[Ind]
+		Imp <- exp(predict(loess(logMx ~ ages.mids.pre, span = span, control = loess.control(surface = "interpolate")), newdata = ages))[Ind]
 		if (any(is.na(Imp))){
-			Imp <- exp(stats:::spline(ages.mids.pre, logMx, xmin = 0, xmax = max(ages))$y[Ind])
+			Imp <- exp(spline(ages.mids.pre, logMx, xmin = 0, xmax = max(ages))$y[Ind])
 		}
 		mx[Ind] <- Imp
 		
@@ -180,12 +182,12 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 	}
 	
 	# in the case that there was no exposure in the last open group (as was the case in my test population)
-	# I decided it made sense to plug in the last ax value for ex, for the hypothetical case tha someone reaches
+	# I decided it made sense to plug in the last ax value for ex, for the hypothetical case that someone reaches
 	# that age. I was only able to get that ax value by extrapolating during the iteration anyway. This wouldn't
 	# have much affect, and will have no effect if indeed there are no people in that age category
 	
 	# Sx is the pertinent output for projections
-    	Sx 			<- vector(length = N)
+    Sx 			    <- vector(length = N)
 	Sx[1:(N - 1)] 	<- (Lx[2:N] / Widths[2:N]) / (Lx[1:(N-1)] / Widths[1:(N - 1)])
 	Sx[N]       	<- Tx[N] / Tx[(N - 1)]
 	# two not-very satisfying, and possibly redundant, substitutions:
@@ -200,32 +202,6 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 	e0estimates[3] 	<- e0lx 	<- sum(lx * Widths) / radix - .5
 	colnames(e0estimates) <- c("T0/l0", "sum((ages+ax)*dx)", "sum(lx)-.5")
 	rownames(e0estimates) <- "e0"
-    # several estimates of edagger (the first one is probably the best)
-
-# edagger deprecated for now, to be reexamined
-#	edaggerestimate <- function(lx,ex,dx,mx,ax){
-#		N <- length(lx)
-#		ed1 <- ed2 <- ed3 <- ed4 <- vector(length=N)
-#		endterm <- 1/lx[N]*dx[N]*.5*ex[N]
-#		for (i in 1:N){
-#			ed2[i] <- (1/lx[i])*sum(lx[i:N]*mx[i:N]*ex[i:N])
-#			ed3[i] <- (1/(2*lx[i]))*sum(dx[i:(N-1)]*(ex[i:(N-1)]+ex[(i+1):N]))
-#			ed4[i] <- (1/lx[i])*sum(dx[i:(N-1)]*((1-ax[i:(N-1)])+ex[(i+1):N]))
-#			sumthing <- 0
-#			if (i < 111){
-#				for (j in i:(N-1)){
-#					sumthing <- sumthing+(dx[j]*(ex[j+1]+1-ax[j]))
-#				}
-#			}
-#			ed1[i] <- (1/lx[i])*sumthing+endterm
-#		}
-#		edagger <- matrix(cbind(ed1,ed2,ed3,ed4),ncol=4,nrow=N)
-#		return(edagger)
-#	}
-#	edagger <- edaggerestimate(lx,ex,dx,mx,ax)
-#	colnames(edagger) <- c("formula1","formula2","formula3","formula4")
-#	rownames(edagger) <- Age
-	# pasting together a lifetable object
 	LT <- data.frame(cbind("Age" = Age, "ages" = ages, "mx" = round(mx, 4), "ax" = round(ax, digits = 4),
 					"qx" = round(qx, 4), "px" = round(px, 4), "lx" = round(lx, 4),
 					"dx" = round(dx, 4), "Lx" = round(Lx, 4), "Tx" = round(Tx, 4), "ex" = round(ex, 4)))

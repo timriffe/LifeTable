@@ -1,2 +1,3 @@
 exportPattern("^[[:alpha:]]+")
-import(MortalitySmooth)
+importFrom(MortalitySmooth,Mort1Dsmooth)
+importFrom(stats,loess)
