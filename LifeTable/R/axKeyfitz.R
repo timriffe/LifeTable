@@ -38,7 +38,8 @@
 #' plot(ages, c(axk1[1], axk1[2] / 4, axk1[3:24] / 5), main = "not recommended for use with abridged data", xlab = "age", ylab = "a(x)")
 #' lines(ages, c(axk2[1], axk2[2] / 4, axk2[3:24] / 5), col = "blue")
 #'}
-
+#' 
+#' @export
 
 axKeyfitz <-
 function(Mx, n, axsmooth = TRUE){
