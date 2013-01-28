@@ -38,18 +38,20 @@
 #' }
 #' 
 #' @references 
-#' The main reference for this function and its subfunctions has been:
+#' The main reference for this function has been:
 #' 
-#'Preston et al (2001). Demography: Measuring and Modelling Population Processes. Blackwell Publishing\\
-#' ax estimation also received input from:\\
-#' Chiang C.L.(1968) Introduction to Stochastic Processes in Biostatistics. New York: Wiley.\\
+#' Preston et al (2001). Demography: Measuring and Modelling Population Processes. Blackwell Publishing
+#' 
+#' ax estimation also received input from:
+#' 
+#' Chiang C.L.(1968) Introduction to Stochastic Processes in Biostatistics. New York: Wiley.
+#' 
 #' Coale Anseley and Paul Demeny, with B Vaughan (1983). Regional Model Life Tables and Stable Populations. New York Academic Press.\\
 #' Keyfitz, Nathan (1966) A Life Table that Agrees with the Data. Journal of the American Statistical Association, 61 (314):305-12. As described on page 44-45 of: Schoen R. (1978) Calculating lifetables by estimating Chiang's a from observed rates. Demography 15: 625-35.
 #' 
-#' function calls \code{MortalitySmooth}:
-#' Carlo G Camarda (2009) MortalitySmooth: Smoothing Poisson counts with P-splines. (version 2.3 at the time of this writing) \url{http://CRAN.R-project.org/package=MortalitySmooth}.
+#' function calls \code{MortalitySmooth}: Carlo G Camarda (2009) MortalitySmooth: Smoothing Poisson counts with P-splines. (version 2.3 at the time of this writing) \url{http://CRAN.R-project.org/package=MortalitySmooth}.
 #' 
-#' @seealso \code{\link{MortalitySmooth}}, \code{\link{axEstimate}}
+#' @seealso \code{\link{MortalitySmooth}}, \code{\link{axEstimate}}.
 #' 
 #' @examples 
 #' \dontrun{
@@ -75,7 +77,8 @@
 #' 
 #' # here a graph with the major functions:
 #' LT1 <- LT(Nx, Dx, type = "single-age", axmethod = "keyfitz", mxsmooth = TRUE)
-#' plot(LT1$ages, LT1$lx, type = 'l', col = "blue", main = "major lifetable functions, UKR 1965 (HMD)", xlab = "age", ylab = "lx ; dx*10 ; mux")
+#' plot(LT1$ages, LT1$lx, type = 'l', col = "blue", main = "major lifetable functions, UKR 1965 (HMD)", 
+#'      xlab = "age", ylab = "lx ; dx*10 ; mux")
 #' lines(LT1$ages, LT1$mx, col = "red")
 #' lines(LT1$ages, LT1$dx * 10, col = "orange", type = 'l')
 #' legend("topright", lty = 1, col = c("blue", "orange", "red"), legend = c("l(x)", "d(x) * 10", "mux"), bg = "white")
@@ -100,6 +103,7 @@
 #' 
 #' @importFrom MortalitySmooth Mort1Dsmooth
 #' @importFrom stats loess
+#' @importFrom svcm cleversearch
 #' 
 #' @export 
 #' 
@@ -217,11 +221,12 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 	if (length(axmethod) == 1 & min(mx) == 0){
 		Ind0 <- mx == 0
 		
-		Verb(verbose, paste("\n\n*there were some ages (", ages[Ind], ") with no mortality.\nValues are imputed for calculating a(x), but the zeros are kept for the rest of the lifetable.\n"))
+		Verb(verbose, paste("\n\n*there were some ages (", ages[Ind0],
+                        ") with no mortality.\nValues are imputed for calculating a(x), but the zeros are kept for the rest of the lifetable.\n"))
 		span <- ifelse(N > 30,.15,.4)
 		logMx <- log(Mx)
 		logMx[is.infinite(logMx)] <- NA
-		Imp <- exp(predict(loess(logMx ~ ages.mids.pre, span = span, control = loess.control(surface = "interpolate")), newdata = ages))[Ind]
+		Imp <- exp(predict(loess(logMx ~ ages.mids.pre, span = span, control = loess.control(surface = "interpolate")), newdata = ages))[Ind0]
 		if (any(is.na(Imp))){
 			Imp <- exp(spline(ages.mids.pre, logMx, xmin = 0, xmax = max(ages))$y[Ind0])
 		}
@@ -252,7 +257,7 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 	}
 	
 	# if zeros were imputed for ax estimation, then we put them back for the rest of the calculations
-	if (exists("Ind")){
+	if (exists("Ind0")){
 		mx[Ind0] <- 0
 	}
 	
@@ -345,7 +350,8 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 #' Nx   <- UKRmales1965[, 3]
 #' Dx   <- UKRmales1965[, 2]
 #' LT1  <- LT(Nx, Dx, type = "single-age", axmethod = "keyfitz", mxsmooth = TRUE)
-#' plot(LT1$ages, LT1$lx, type = 'l', col = "blue", main = "major lifetable functions, UKR 1965 (HMD)", xlab = "age", ylab = "lx ; dx*10 ; mux")
+#' plot(LT1$ages, LT1$lx, type = 'l', col = "blue", main = "major lifetable functions, UKR 1965 (HMD)", 
+#'      xlab = "age", ylab = "lx ; dx*10 ; mux")
 #' lines(LT1$ages, LT1$mx, col = "red")
 #' lines(LT1$ages, LT1$dx * 10, col = "orange")
 #' legend("topright", lty = 1, col = c("blue", "orange", "red"), legend = c("l(x)", "d(x) * 10", "mux"), bg = "white")

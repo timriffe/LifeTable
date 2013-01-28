@@ -6,7 +6,7 @@
 #' @param Mx a numeric vector of the age-specific central death rates, calculated as D(x)/N(x) (deaths/exposure).
 #' @param n a numeric vector of age interval widths.
 #' @param axsmooth logical. default = \code{TRUE}. Should the a(x) values be calculated from a smoothed M(x) series? In this case, the M(x) series is smoothed within the function for a(x) estimation, but the smoothed M(x) function that was used is not returned. In general, it is better to smooth the M(x) function prior to putting it in this function, because the loess smoother used here has no weights or offset. If this is not possible, loess M(x) smoothing still produces more consistent and less erratic a(x) estimates.
-#' @param \code{"male"} or \code{"female"}. default = \code{"female"}. The Coale Demeny rules of thumb are different for males and females.
+#' @param sex \code{"male"} or \code{"female"}. default = \code{"female"}. The Coale Demeny rules of thumb are different for males and females.
 #' 
 #' @details In the case of single ages, I found that ages a1-a10 were all estimated very close to .5, whereas the older ages a50+ were all estimated very close to what other methods produce. In order to adjust a(x) values to reflect dropping mortality at young ages, I wrote the following rule of thumb, which scales based on the level of mortality at age 0 and age 8. Basically the drop in mortality from age 0 to 8 ought to produce successively larger a(x) values, approaching .5. The increments in a(x) at each age from 1 until 8 are thus applied according to some fixed proportions, contained in the variable 'jumps'. This is the last code chunk in the function, which is displayed below under 'examples'. For more info, look at the code.
 #' 

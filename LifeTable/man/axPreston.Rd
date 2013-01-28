@@ -21,7 +21,7 @@
   smoothing still produces more consistent and less erratic
   a(x) estimates.}
 
-  \item{\code{"male"}}{or \code{"female"}. default =
+  \item{sex}{\code{"male"} or \code{"female"}. default =
   \code{"female"}. The Coale Demeny rules of thumb are
   different for males and females.}
 }

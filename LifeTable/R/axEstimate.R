@@ -23,7 +23,7 @@
 #' 
 #' @note Be aware that all of the above methods are in some way a hybrid: In the \code{"schoen"} and \code{"keyfitz"} methods, I added procedures to produce values for the final age(s) in a rudimentary way, and in the \code{"preston"} method I also made a rudimentary estimation procedure for a1 - a8 for single age data. For all methods, except the \code{"preston"} method, a0 is calculated as \code{.07 + 1.7 * M0}. It is best not to use \code{"keyfitz"} the default method) with abridged age groups.
 #' 
-#' @seealso This function dispatches to one of four different a(x) estimation functions \code{\link{axMidpoint}} for the "midpoint" method, \code{\link{axSchoen}} for the \code{"schoen"} method, \code{\link{axPreston}} for the "preston" method and \code{\link{axKeyfitz}} for the \code{"keyfitz"} method. Look to these pages for specifics. Compare using the examples below. This function is called by \code{\link{LT()}}, a single decrement lifetable function.
+#' @seealso This function dispatches to one of four different a(x) estimation functions \code{\link{axMidpoint}} for the "midpoint" method, \code{\link{axSchoen}} for the \code{"schoen"} method, \code{\link{axPreston}} for the "preston" method and \code{\link{axKeyfitz}} for the \code{"keyfitz"} method. Look to these pages for specifics. Compare using the examples below. This function is called by \code{\link{LT}}, a single decrement lifetable function.
 #' 
 #' @examples # single age comparisons:
 #' \dontrun{
@@ -41,12 +41,11 @@
 #' lines(ages, axs, col = "red", lty = 2)
 #' lines(ages, axm, col = "orange", lty = 3)
 #' lines(ages, axp, col = "green", lty = 4)
-#' text(55, .54, "data from HMD, Ukrain males. 1965", xpd = TRUE)
+#' text(55, .54, "data from HMD, Ukraine males. 1965", xpd = TRUE)
 #' legend("bottom", col = c("blue", "red", "orange", "green"), lty = c(1, 2, 3, 4), legend =c("keyfitz", "schoen", "midpoint", "preston"))
 #' ## set axsmooth to FALSE to compare unsmoothed versions of these.
 #' 
 #' ## abridged 5-year age comparison:
-#' library(LifeTable)
 #' data(UKR5males1965)
 #' Mx       <- UKR5males1965[, 4]
 #' Widths   <- c(1, 4, rep(5, (length(Mx) - 2)))

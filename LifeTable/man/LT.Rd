@@ -154,7 +154,8 @@ LT(Nx, Dx, type = "single-age", axmethod = "preston")$e0est
 
 # here a graph with the major functions:
 LT1 <- LT(Nx, Dx, type = "single-age", axmethod = "keyfitz", mxsmooth = TRUE)
-plot(LT1$ages, LT1$lx, type = 'l', col = "blue", main = "major lifetable functions, UKR 1965 (HMD)", xlab = "age", ylab = "lx ; dx*10 ; mux")
+plot(LT1$ages, LT1$lx, type = 'l', col = "blue", main = "major lifetable functions, UKR 1965 (HMD)",
+     xlab = "age", ylab = "lx ; dx*10 ; mux")
 lines(LT1$ages, LT1$mx, col = "red")
 lines(LT1$ages, LT1$dx * 10, col = "orange", type = 'l')
 legend("topright", lty = 1, col = c("blue", "orange", "red"), legend = c("l(x)", "d(x) * 10", "mux"), bg = "white")
@@ -178,21 +179,24 @@ plot(Sx)
 }
 }
 \references{
-  The main reference for this function and its subfunctions
-  has been:
+  The main reference for this function has been:
 
   Preston et al (2001). Demography: Measuring and Modelling
-  Population Processes. Blackwell Publishing\\ ax
-  estimation also received input from:\\ Chiang C.L.(1968)
-  Introduction to Stochastic Processes in Biostatistics.
-  New York: Wiley.\\ Coale Anseley and Paul Demeny, with B
-  Vaughan (1983). Regional Model Life Tables and Stable
-  Populations. New York Academic Press.\\ Keyfitz, Nathan
-  (1966) A Life Table that Agrees with the Data. Journal of
-  the American Statistical Association, 61 (314):305-12. As
-  described on page 44-45 of: Schoen R. (1978) Calculating
-  lifetables by estimating Chiang's a from observed rates.
-  Demography 15: 625-35.
+  Population Processes. Blackwell Publishing
+
+  ax estimation also received input from:
+
+  Chiang C.L.(1968) Introduction to Stochastic Processes in
+  Biostatistics. New York: Wiley.
+
+  Coale Anseley and Paul Demeny, with B Vaughan (1983).
+  Regional Model Life Tables and Stable Populations. New
+  York Academic Press.\\ Keyfitz, Nathan (1966) A Life
+  Table that Agrees with the Data. Journal of the American
+  Statistical Association, 61 (314):305-12. As described on
+  page 44-45 of: Schoen R. (1978) Calculating lifetables by
+  estimating Chiang's a from observed rates. Demography 15:
+  625-35.
 
   function calls \code{MortalitySmooth}: Carlo G Camarda
   (2009) MortalitySmooth: Smoothing Poisson counts with
@@ -200,6 +204,6 @@ plot(Sx)
   \url{http://CRAN.R-project.org/package=MortalitySmooth}.
 }
 \seealso{
-  \code{\link{MortalitySmooth}}, \code{\link{axEstimate}}
+  \code{\link{MortalitySmooth}}, \code{\link{axEstimate}}.
 }
 

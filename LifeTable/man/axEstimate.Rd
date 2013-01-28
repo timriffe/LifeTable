@@ -88,12 +88,11 @@ plot(ages, axk, type = 'l', col = "blue", main = "comparing a(x) methods, single
 lines(ages, axs, col = "red", lty = 2)
 lines(ages, axm, col = "orange", lty = 3)
 lines(ages, axp, col = "green", lty = 4)
-text(55, .54, "data from HMD, Ukrain males. 1965", xpd = TRUE)
+text(55, .54, "data from HMD, Ukraine males. 1965", xpd = TRUE)
 legend("bottom", col = c("blue", "red", "orange", "green"), lty = c(1, 2, 3, 4), legend =c("keyfitz", "schoen", "midpoint", "preston"))
 ## set axsmooth to FALSE to compare unsmoothed versions of these.
 
 ## abridged 5-year age comparison:
-library(LifeTable)
 data(UKR5males1965)
 Mx       <- UKR5males1965[, 4]
 Widths   <- c(1, 4, rep(5, (length(Mx) - 2)))
@@ -138,7 +137,7 @@ legend("bottom", col = c("blue", "red", "orange", "green"), lty = c(1, 2, 3, 4),
   "preston" method and \code{\link{axKeyfitz}} for the
   \code{"keyfitz"} method. Look to these pages for
   specifics. Compare using the examples below. This
-  function is called by \code{\link{LT()}}, a single
+  function is called by \code{\link{LT}}, a single
   decrement lifetable function.
 }
 

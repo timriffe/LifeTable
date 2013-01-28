@@ -24,7 +24,8 @@ Depends:
     R (>= 2.10),
     stats
 Imports:
-    MortalitySmooth
+    MortalitySmooth,
+    svcm
 Collate:
     'LT.R'
     'axEstimate.R'
