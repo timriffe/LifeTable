@@ -6,7 +6,7 @@
 #' @param n a numeric vector of age interval widths.
 #' @param axsmooth logical. default = \code{TRUE}. Should the a(x) values be calculated from a smoothed M(x) series? In this case, the M(x) series is smoothed within the function for a(x) estimation, but the smoothed M(x) function that was used is not returned. In general, it is better to smooth the M(x) function prior to putting it in this function, because the loess smoother used here has no weights or offset. If this is not possible, loess M(x) smoothing still produces more consistent and less erratic a(x) estimates.
 #' @param method either \code{"keyfitz"}, \code{"schoen"}, \code{"preston"} or \code{"midpoint"}. Default = \code{"keyfitz"}, although this is not recommended for abridged ages. See comparisons in examples below.
-#' @parm sex \code{"female"} or \code{"male"}. default \code{"female"}. This is only used by the \code{"preston"} method and need no be specified for any other method.
+#' @param sex \code{"female"} or \code{"male"}. default \code{"female"}. This is only used by the \code{"preston"} method and need no be specified for any other method.
 #' 
 #' @details This function is a wrapper, and it is called by the lifetable function \code{LT()}, although it can be used independently as well. For fuller explanations, see the descriptions and code of the various methods. Formulas are available in the referenced works.
 #' 
@@ -19,7 +19,7 @@
 #' 
 #' Keyfitz, Nathan (1966) A Life Table that Agrees with the Data. Journal of the American Statistical Association, 61 (314):305-12. (as described on page 44-45 of Preston et al (2001). Demography: Measuring and Modelling Population Processes. Blackwell Publishing)
 #' 
-#' Schoen R. (1978) Calculating lifetables by estimating Chiang's a from observed rates. Demography 15: 625-35.
+#' Schoen R. (1978) Calculating lifetables by estimating Chiang\'s a from observed rates. Demography 15: 625-35.
 #' 
 #' @note Be aware that all of the above methods are in some way a hybrid: In the \code{"schoen"} and \code{"keyfitz"} methods, I added procedures to produce values for the final age(s) in a rudimentary way, and in the \code{"preston"} method I also made a rudimentary estimation procedure for a1 - a8 for single age data. For all methods, except the \code{"preston"} method, a0 is calculated as \code{.07 + 1.7 * M0}. It is best not to use \code{"keyfitz"} the default method) with abridged age groups.
 #' 
@@ -64,6 +64,7 @@
 #' legend("bottom", col = c("blue", "red", "orange", "green"), lty = c(1, 2, 3, 4), legend = c("keyfitz", "schoen", "midpoint", "preston"))
 #' ## set axsmooth to FALSE to compare unsmoothed versions of these.
 #' ## here, you can see why Preston advises against the Keyfitz when age intervals are not equal. 
+#' }
 #' 
 #' @export
 

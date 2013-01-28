@@ -1,8 +1,4 @@
-#' @title 
-#' 
-#' 
-#' 
-#' 
+#
 #' @title axSchoen Schoen's MDAT approximation of Chiang's a(x), average number of years lived by persons dying in the interval x, x + n.
 #' 
 #' @description This estimation technique of Chiang's a(x) was proposed by Schoen (1978) and is called the Mean Duration at Transfer (MDAT) method. Adjacent values of the force of mortality function, M(x), assumed to be the lifetable m(x), are used to estimate the mean age at exit from each interval.

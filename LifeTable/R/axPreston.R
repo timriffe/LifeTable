@@ -1,3 +1,4 @@
+
 #' @title axPreston approximation of a(x) using a few rules of thumb outlined by Preston et al (2001)
 #' 
 #' @description a(x) estimated assuming death rate constant in each interval. Most a values are estimated using \code{ax = n + (1/Mx) - n/(1-exp(-n*Mx))}, except for a0, which uses a few rules of thumb derived from Coale and Demeny (1983) and displayed in table 3.3 in Preston (2001). In the case of single ages, I found that ages a1-a10 were all estimated very close to .5, whereas the older ages a50+ were all estimated very close to what other methods produce. In order to adjust a(x) values
@@ -43,6 +44,7 @@
 #' axp2     <- axPreston(Mx, n, axsmooth = TRUE, sex = "male")
 #' plot(ages, c(axp1[1], axp1[2] / 4, axp1[3:24] / 5), main = "comparing smoothed and unsmoothed a(x)", xlab = "age", ylab = "a(x)")
 #' lines(ages, c(axp2[1], axp2[2] / 4, axp2[3:24] / 5), col = "blue")
+#' }
 #' 
 #' @export
 

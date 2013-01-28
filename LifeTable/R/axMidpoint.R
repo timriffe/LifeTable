@@ -14,7 +14,7 @@
 #'
 #' @seealso See Also \code{\link{axEstimate}}, a wrapper function for this and 3 other a(x) estimation methods (\code{\link{axKeyfitz}},\code{\link{axSchoen}} and \code{\link{axPreston}}).
 #' 
-#'  @export 
+#' @export 
 
 axMidpoint <-
 function(Mx, n){
