@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: axMidpoint approximates a(x) using interval midpoints</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for axMidpoint"><tr><td>axMidpoint</td><td align="right">R Documentation</td></tr></table>
+
+<h2>axMidpoint approximates a(x) using interval midpoints</h2>
+
+<h3>Description</h3>
+
+<p>approximates a(x) using interval midpoints (except a0,
+which is estimated using a rule-of-thumb formula scaled
+by m0)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  axMidpoint(Mx, n)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>Mx</code></td>
+<td>
+<p>a numeric vector of central death rates,
+defined as deaths/exposure.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>a numeric vector of the age-interval widths.
+Must be the same length as Mx.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>All values will be in the exact middle of the age
+interval, except for a0, which uses: <code>a0 = .07 + 1.7
+  * M0</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>returns a numeric vector of ax values
+</p>
+
+
+<h3>References</h3>
+
+<p>formula for a0 as suggested by: Keyfitz, N. (1970),
+Finding probabilities from observed rates, or how to make
+a life table. The American Statistician (1970), pp. 28-33
+</p>
+
+
+<h3>See Also</h3>
+
+<p>See Also <code>axEstimate</code>, a wrapper function for
+this and 3 other a(x) estimation methods
+(<code>axKeyfitz</code>,<code>axSchoen</code> and
+<code>axPreston</code>).
+</p>
+
+
+</body></html>

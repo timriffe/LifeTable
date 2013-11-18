@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: 'AKm02a0' estimates a0 using the Andreev-Kinkade rule of...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for AKm02a0"><tr><td>AKm02a0</td><td align="right">R Documentation</td></tr></table>
+
+<h2><code>AKm02a0</code> estimates a0 using the Andreev-Kinkade rule of thumb.</h2>
+
+<h3>Description</h3>
+
+<p><code>AKm02a0</code> is an auxiliary function used by version 6
+of the four HMD lifetable functions, <code>ltper_AxN()</code>,
+<code>ltcoh_AxN()</code>, <code>ltperBoth_AxN()</code>,
+<code>ltcohBoth_AxN()</code>. This function calls
+<code>AKm02q0()</code> to help get the work done, since the HMD
+needed to adapt the Andreev-Kingkade formulas to work
+with the period lifetable flow.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  AKm02a0(m0, sex = "male")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>m0</code></td>
+<td>
+<p>the event / exposure infant mortality rate (not
+IMR)</p>
+</td></tr>
+<tr valign="top"><td><code>sex</code></td>
+<td>
+<p>either &quot;male&quot; or &quot;female&quot;</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This is based on an MPIDR Working Paper: Andreev, Evgueni
+M and Kingkade, Ward W (2011) &quot;Average age at death in
+infancy and infant mortality level: reconsidering the
+Coale-Demeny formulas at current levels of low
+mortality&quot;. short link: http://goo.gl/b5m5pg.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a0, the estimated average age at death of those dying in
+the first year of life, either a single value or a vector
+of a_0 values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Tim Riffe <a href="mailto:triffe@demog.berkeley.edu">triffe@demog.berkeley.edu</a>
+</p>
+
+
+</body></html>
