@@ -1,0 +1,40 @@
+\name{AKm02q0}
+\alias{AKm02q0}
+\title{AKm02q0 derive q0 from m0 using the Andreev-Kingkade rule of thumb.}
+\usage{
+  AKm02q0(m0, constant, slope)
+}
+\arguments{
+  \item{m0}{the event / exposure infant mortality rate (not
+  IMR)}
+
+  \item{constant}{the intercept of the relevant
+  Andreev-Kingkade segment}
+
+  \item{slope}{the slope of the relevant Andreev-Kingkade
+  segment}
+}
+\value{
+  q0 the estimate of q0 according to the identity between
+  a0, m0, q0
+}
+\description{
+  Derive m0 from q0 according to the relevant segment of
+  the Andreev-Kingkade formula. This is elegant because
+  it's an analytic solution, but ugly because, man, look at
+  it. Carl Boe got this from Maple I think. This formula is
+  only necessary because AK start with q0 whereas the HMD
+  starts with m0, so we needed to adapt. This is an
+  auxiliary function, and not likely needed for direct use.
+}
+\details{
+  This is based on an MPIDR Working Paper: Andreev, Evgueni
+  M and Kingkade, Ward W (2011) "Average age at death in
+  infancy and infant mortality level: reconsidering the
+  Coale-Demeny formulas at current levels of low
+  mortality". short link: http://goo.gl/b5m5pg.
+}
+\author{
+  Tim Riffe \email{triffe@demog.berkeley.edu}
+}
+
