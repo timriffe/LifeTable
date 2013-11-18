@@ -8,7 +8,7 @@
 #' @param constant the intercept of the relevant Andreev-Kingkade segment
 #' @param slope the slope of the relevant Andreev-Kingkade segment
 #' 
-#' @value q0 the estimate of q0 according to the identity between a0, m0, q0
+#' @return q0 the estimate of q0 according to the identity between a0, m0, q0
 #' 
 #' @author Tim Riffe \email{triffe@@demog.berkeley.edu}
 #' 

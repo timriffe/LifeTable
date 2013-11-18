@@ -3,7 +3,7 @@
 \title{axEstimate A function to estimate Chiang's a(x) values using a variety of methods.}
 \usage{
   axEstimate(Mx, n, axsmooth = TRUE, method = "keyfitz",
-    sex)
+    sex, verbose)
 }
 \arguments{
   \item{Mx}{a numeric vector of the age-specific central
@@ -48,9 +48,9 @@
   called so not because he explicitly invented it, but
   rather because it follows a series of rules of thumbs
   drawn from other sources and described so well in Preston
-  et al (2001). Follow links to the individual ax
-  estimation functions to see the details of the various
-  methods.
+  et al (2001). See the individual ax estimation functions
+  to see the details of the various methods. a0 is handled
+  using a variant of the Andreev-Kingkade method.
 }
 \details{
   This function is a wrapper, and it is called by the
@@ -66,10 +66,10 @@
   final age(s) in a rudimentary way, and in the
   \code{"preston"} method I also made a rudimentary
   estimation procedure for a1 - a8 for single age data. For
-  all methods, except the \code{"preston"} method, a0 is
-  calculated as \code{.07 + 1.7 * M0}. It is best not to
-  use \code{"keyfitz"} the default method) with abridged
-  age groups.
+  all methods, a0 is calculated using a modified version of
+  the Andreev-Kingkade a0 rule. It is best not to use
+  \code{"keyfitz"} the default method, with abridged age
+  groups.
 }
 \examples{
 # single age comparisons:
@@ -128,6 +128,11 @@ legend("bottom", col = c("blue", "red", "orange", "green"), lty = c(1, 2, 3, 4),
 
   Schoen R. (1978) Calculating lifetables by estimating
   Chiang\'s a from observed rates. Demography 15: 625-35.
+
+  Andreev, Evgueni M and Kingkade, Ward W (2011) Average
+  age at death in infancy and infant mortality level:
+  reconsidering the Coale-Demeny formulas at current levels
+  of low mortality. MPIDR Working Paper WP-2011-016.
 }
 \seealso{
   This function dispatches to one of four different a(x)

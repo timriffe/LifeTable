@@ -112,10 +112,7 @@
   expectancy at birth. Two other estimates of e(0) are
   given below.  \item \code{Sx} probability of surviving
   from age x until age x + n (l_{x+n}/l_{x}).  \item
-  \code{Widths} vector of age intervals (n).  \item
-  \code{e0est} a matrix with three elements, each e(0)
-  estimated in a different way (formula in column headers).
-  }
+  \code{Widths} vector of age intervals (n). }
 }
 \description{
   Accepts either single age or 5-year abridged data.

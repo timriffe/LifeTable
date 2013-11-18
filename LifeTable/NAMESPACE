@@ -1,3 +1,5 @@
+export(AKm02a0)
+export(AKm02q0)
 export(LT)
 export(axEstimate)
 export(axKeyfitz)
