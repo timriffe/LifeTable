@@ -27,7 +27,8 @@ install_github("LifeTable", subdir = "LifeTable", username = "timriffe")
 Help
 ===============
 All functions are documented in the standard way, which means that once you load the package using ```library(LifeTable)```
-you can just type for example ```?LT``` to see the help file. Help files will soon be available on this site in html format, to be announced.
+you can just type for example ```?LT``` to see the help file. Help files are also available in html format, 
+[here](https://github.com/timriffe/LifeTable/help).
 
 To report a bug
 ===============
