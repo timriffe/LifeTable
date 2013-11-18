@@ -19,7 +19,7 @@
 axMidpoint <-
 function(Mx, n){
 	ax      <- .5 * n		
-	ax[1]   <- .07 + 1.7 * Mx[1]
+	ax[1]   <- .07 + 1.7 * Mx[1] # I guess this is Keyfitz + Flieger?
 	return(ax)
 }
 

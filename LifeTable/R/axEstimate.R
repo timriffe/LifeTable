@@ -1,6 +1,6 @@
 #' @title axEstimate A function to estimate Chiang's a(x) values using a variety of methods.
 #' 
-#' @description This is a wrapper function to estimate the average distance into an age interval lived by those dying within that age interval. It calls 4 different methods: \code{"keyfitz"}, \code{"schoen"}, \code{"midpoint"} or \code{"preston"}. These generally use formulas proposed by their respective namesakes, although all have been modified by the current author in minor ways, usually in order to provide values for the final ages, which are left as NAs using certain methods. The Preston method is called so not because he explicitly invented it, but rather because it follows a series of rules of thumbs drawn from other sources and described so well in Preston et al (2001). Follow links to the individual  ax estimation functions to see the details of the various methods.
+#' @description This is a wrapper function to estimate the average distance into an age interval lived by those dying within that age interval. It calls 4 different methods: \code{"keyfitz"}, \code{"schoen"}, \code{"midpoint"} or \code{"preston"}. These generally use formulas proposed by their respective namesakes, although all have been modified by the current author in minor ways, usually in order to provide values for the final ages, which are left as NAs using certain methods. The Preston method is called so not because he explicitly invented it, but rather because it follows a series of rules of thumbs drawn from other sources and described so well in Preston et al (2001). See the individual ax estimation functions to see the details of the various methods. a0 is handled using a variant of the Andreev-Kingkade method.
 #' 
 #' @param Mx a numeric vector of the age-specific central death rates, calculated as D(x)/N(x) (deaths/exposure)
 #' @param n a numeric vector of age interval widths.
@@ -21,7 +21,9 @@
 #' 
 #' Schoen R. (1978) Calculating lifetables by estimating Chiang\'s a from observed rates. Demography 15: 625-35.
 #' 
-#' @note Be aware that all of the above methods are in some way a hybrid: In the \code{"schoen"} and \code{"keyfitz"} methods, I added procedures to produce values for the final age(s) in a rudimentary way, and in the \code{"preston"} method I also made a rudimentary estimation procedure for a1 - a8 for single age data. For all methods, except the \code{"preston"} method, a0 is calculated as \code{.07 + 1.7 * M0}. It is best not to use \code{"keyfitz"} the default method) with abridged age groups.
+#' Andreev, Evgueni M and Kingkade, Ward W (2011) Average age at death in infancy and infant mortality level: reconsidering the Coale-Demeny formulas at current levels of low mortality. MPIDR Working Paper WP-2011-016.
+#' 
+#' @note Be aware that all of the above methods are in some way a hybrid: In the \code{"schoen"} and \code{"keyfitz"} methods, I added procedures to produce values for the final age(s) in a rudimentary way, and in the \code{"preston"} method I also made a rudimentary estimation procedure for a1 - a8 for single age data. For all methods, a0 is calculated using a modified version of the Andreev-Kingkade a0 rule. It is best not to use \code{"keyfitz"} the default method, with abridged age groups.
 #' 
 #' @seealso This function dispatches to one of four different a(x) estimation functions \code{\link{axMidpoint}} for the "midpoint" method, \code{\link{axSchoen}} for the \code{"schoen"} method, \code{\link{axPreston}} for the "preston" method and \code{\link{axKeyfitz}} for the \code{"keyfitz"} method. Look to these pages for specifics. Compare using the examples below. This function is called by \code{\link{LT}}, a single decrement lifetable function.
 #' 
@@ -68,7 +70,7 @@
 #' @export
 
 axEstimate <-
-function(Mx, n, axsmooth = TRUE, method = "keyfitz", sex){
+function(Mx, n, axsmooth = TRUE, method = "keyfitz", sex,verbose){
     if (! method %in% c("keyfitz", "schoen", "midpoint", "preston")){
         stop("ax method specified is not valid, must be 'keyfitz','schoen','midpoint' or 'preston'")
     }
@@ -83,11 +85,13 @@ function(Mx, n, axsmooth = TRUE, method = "keyfitz", sex){
 	}
 	if (method == "preston"){
 		if (missing(sex)) {
-            cat("\nWarning: You didn't specify 'sex', assumed 'female'!\n")
+            Verb(verbose,"\nWarning: You didn't specify 'sex', assumed 'female'!\n")
             sex <- "female"
         }
         ax <- axPreston(Mx, n, axsmooth, sex)
 	}
+    # use Andreev-Kingkade a0 formula.
+    ax[1]  <- AKm02a0(Mx[1],sex)
 	return(ax)
 }
 
