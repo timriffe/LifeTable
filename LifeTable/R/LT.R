@@ -270,8 +270,7 @@ function(Nx, Dx, Mx, ages = "auto", type = "single-age", axmethod = "keyfitz", s
 	dx 			    <- -diff(lx)
 	dx[N] 		    <- lx[N]
 	
-	Lx[1:(N - 1)] 	<- Widths[1:(N - 1)] * lx[2:N] + ax[1:(N - 1)] * dx[1:(N - 1)]
-	Lx[N] 		    <- lx[N] / mx[N]
+	Lx 	<- c(Widths[1:(N - 1)] * lx[2:N] + ax[1:(N - 1)] * dx[1:(N - 1)], lx[N] / mx[N])
 	Lx[is.infinite(Lx)] <- 1
 	Lx[is.na(Lx)] 	<- 0
 	
