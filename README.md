@@ -11,7 +11,7 @@ Installation
 
 To download the most recent version of LifeTable:
 
-Download the [zip ball](https://github.com/UCBdemography/DemogBerkeley/zipball/master) or [tar ball](https://github.com/UCBdemography/DemogBerkeley/tarball/master), decompress and run `R CMD INSTALL` on it in the terminal command line, or use the **devtools** package to install the development version:
+Download the [zip ball](https://github.com/timriffe/LifeTable/zipball/master) or [tar ball](https://github.com/timriffe/LifeTable/tarball/master), decompress and run `R CMD INSTALL` on it in the terminal command line, or use the **devtools** package to install the development version:
 
 ```r
 # install.packages("devtools")
@@ -28,7 +28,7 @@ Help
 ===============
 All functions are documented in the standard way, which means that once you load the package using ```library(LifeTable)```
 you can just type for example ```?LT``` to see the help file. Help files are also available in html format, 
-[here](https://github.com/timriffe/LifeTable/help).
+[here](timriffe.github.io/LifeTable/help).
 
 To report a bug
 ===============
