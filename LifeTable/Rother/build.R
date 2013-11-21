@@ -7,13 +7,17 @@ load_all("/home/triffe/git/LifeTable/LifeTable")
 document("/home/triffe/git/LifeTable/LifeTable")
 
 library(tools)
-parent.path <- "/home/triffe/git/LifeTable/"
+parent.path <- "/home/triffe/git/LifeTable"
 package.path <- file.path(parent.path,"LifeTable")
 Rdfiles     <- list.files(file.path(package.path , "man"))
 sapply(Rdfiles, function(xxx, parent.path, package.path){
             htmlname <- gsub("\\.Rd", "\\.html", xxx)
+            html.path<-file.path(parent.path,"help",htmlname)
+            if (file.exists(html.path)){
+                file.remove(html.path)
+            }
             Rd2HTML(file.path(package.path,"man", xxx),
-                    out = file.path(parent.path,"help",htmlname),
+                    out = html.path,
                     stylesheet = "R.css")
             #go to folder
         },parent.path = parent.path, package.path = package.path)
