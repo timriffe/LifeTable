@@ -7,7 +7,7 @@ load_all("/home/triffe/git/LifeTable/LifeTable",TRUE)
 document("/home/triffe/git/LifeTable/LifeTable")
 
 library(tools)
-parent.path <- "/home/triffe/git/LifeTable/"
+parent.path <- "/home/triffe/git/LifeTable"
 package.path <- file.path(parent.path,"LifeTable")
 Rdfiles     <- list.files(file.path(package.path , "man"))
 sapply(Rdfiles, function(xxx, parent.path, package.path){
