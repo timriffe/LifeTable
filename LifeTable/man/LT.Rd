@@ -130,19 +130,19 @@ Dx <- UKRmales1965[, 2]
 # comparing different estimates of life expectancy based on whether mx or ax smoothing
 # is used  (no major differences). Could also just specify Mx directly instead of both Nx and Dx.
 # if you want to smooth the mx, better to use Nx and Dx together instead of Mx.
-LT(Nx, Dx, type = "single-age", axsmooth = TRUE)$e0est
-LT(Nx, Dx, type = "single-age", axsmooth = FALSE)$e0est
-LT(Nx, Dx, type = "single-age", mxsmooth = FALSE, axsmooth = FALSE)$e0est
-LT(Nx, Dx, type = "single-age", mxsmooth = FALSE, axsmooth = TRUE)$e0est
+LT(Nx, Dx, axsmooth = TRUE)$ex[1]
+LT(Nx, Dx, axsmooth = FALSE)$ex[1]
+LT(Nx, Dx, mxsmooth = FALSE, axsmooth = FALSE)$ex[1]
+LT(Nx, Dx, mxsmooth = FALSE, axsmooth = TRUE)$ex[1]
 
 # now comparing life expectancy estimates depending on the ax estimation method used (no major differences)
-LT(Nx, Dx, type = "single-age", axmethod = "keyfitz", mxsmooth = FALSE)$e0est
-LT(Nx, Dx, type = "single-age", axmethod = "schoen")$e0est
-LT(Nx, Dx, type = "single-age", axmethod = "preston")$e0est
+LT(Nx, Dx, axmethod = "keyfitz", mxsmooth = FALSE)$ex[1]
+LT(Nx, Dx, axmethod = "schoen")$ex[1]
+LT(Nx, Dx, axmethod = "preston")$ex[1]
 # there are tons more combinations of with/without smoothing, ax methods...
 
 # here a graph with the major functions:
-LT1 <- LT(Nx, Dx, type = "single-age", axmethod = "keyfitz", mxsmooth = TRUE)
+LT1 <- LT(Nx, Dx, axmethod = "keyfitz", mxsmooth = TRUE)
 plot(LT1$ages, LT1$lx, type = 'l', col = "blue", main = "major lifetable functions, UKR 1965 (HMD)",
      xlab = "age", ylab = "lx ; dx*10 ; mux")
 lines(LT1$ages, LT1$mx, col = "red")
@@ -155,7 +155,7 @@ head(UKR5males1965)
 Nx <- UKR5males1965[, 3]
 Dx <- UKR5males1965[, 2]
 
-LT5 <- LT(Nx, Dx, type = "abridged", axmethod = "schoen", mxsmooth = FALSE, axsmooth = FALSE)
+LT5 <- LT(Nx, Dx, ages=c(0,1,seq(5,110,by=5)), axmethod = "schoen", mxsmooth = FALSE, axsmooth = FALSE)
 plot(LT5$ages, LT5$lx, type = 'l', col = "blue", main = "major lifetable functions, UKR 1965 (HMD)", xlab = "age", ylab = "lx ; dx * 10 ; mux")
 lines(LT5$ages, LT5$mx, col = "red")
 lines(LT5$ages, c(LT5$dx[1], LT5$dx[2] / 4, LT5$dx[3:24] / 5) * 10, col = "orange", type = 'l')

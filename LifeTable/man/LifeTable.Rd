@@ -30,7 +30,7 @@ data(UKRmales1965)
 head(UKRmales1965)
 Nx   <- UKRmales1965[, 3]
 Dx   <- UKRmales1965[, 2]
-LT1  <- LT(Nx, Dx, type = "single-age", axmethod = "keyfitz", mxsmooth = TRUE)
+LT1  <- LT(Nx, Dx, axmethod = "keyfitz", mxsmooth = TRUE)
 plot(LT1$ages, LT1$lx, type = 'l', col = "blue", main = "major lifetable functions, UKR 1965 (HMD)",
      xlab = "age", ylab = "lx ; dx*10 ; mux")
 lines(LT1$ages, LT1$mx, col = "red")
