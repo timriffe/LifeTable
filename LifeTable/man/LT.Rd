@@ -103,7 +103,7 @@
   lifetable ex. Life remaining life expectancy at age x.
   e(0) = life expectancy at birth. Two other estimates of
   e(0) are given below.  \item \code{Sx} probability of
-  surviving from age x until age x + n (l_{x+n}/l_{x}).
+  surviving from age x until age x + n (L_{x+n}/L_{x}).
   \item \code{Widths} vector of age intervals (n). }
 }
 \description{
