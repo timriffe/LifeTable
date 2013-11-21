@@ -28,7 +28,7 @@ library(LifeTable, lib="/home/triffe/R/x86_64-pc-linux-gnu-library/2.13")
 data(UKRmales1965)
 Nx <- UKRmales1965[, 3]
 Dx <- UKRmales1965[, 2]
-LT(Nx, Dx, ages = 0:110, axsmooth = TRUE)$e0est
+LT(Nx, Dx, ages = 0:110, axsmooth = TRUE)$ex[1]
 source("/home/triffe/git/LifeTable/LifeTable/R/LT.R")
 
 installed.packages()

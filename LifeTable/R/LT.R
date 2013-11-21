@@ -61,15 +61,15 @@
 #' # comparing different estimates of life expectancy based on whether mx or ax smoothing 
 #' # is used  (no major differences). Could also just specify Mx directly instead of both Nx and Dx.
 #' # if you want to smooth the mx, better to use Nx and Dx together instead of Mx.
-#' LT(Nx, Dx, axsmooth = TRUE)$e0est
-#' LT(Nx, Dx, axsmooth = FALSE)$e0est
-#' LT(Nx, Dx, mxsmooth = FALSE, axsmooth = FALSE)$e0est
-#' LT(Nx, Dx, mxsmooth = FALSE, axsmooth = TRUE)$e0est
+#' LT(Nx, Dx, axsmooth = TRUE)$ex[1]
+#' LT(Nx, Dx, axsmooth = FALSE)$ex[1]
+#' LT(Nx, Dx, mxsmooth = FALSE, axsmooth = FALSE)$ex[1]
+#' LT(Nx, Dx, mxsmooth = FALSE, axsmooth = TRUE)$ex[1]
 #' 
 #' # now comparing life expectancy estimates depending on the ax estimation method used (no major differences)
-#' LT(Nx, Dx, axmethod = "keyfitz", mxsmooth = FALSE)$e0est
-#' LT(Nx, Dx, axmethod = "schoen")$e0est
-#' LT(Nx, Dx, axmethod = "preston")$e0est
+#' LT(Nx, Dx, axmethod = "keyfitz", mxsmooth = FALSE)$ex[1]
+#' LT(Nx, Dx, axmethod = "schoen")$ex[1]
+#' LT(Nx, Dx, axmethod = "preston")$ex[1]
 #' # there are tons more combinations of with/without smoothing, ax methods...
 #' 
 #' # here a graph with the major functions:
