@@ -137,11 +137,10 @@ function(Nx=NULL, Dx=NULL, Mx = Dx/Nx, ages = 0:(length(Mx)-1), axmethod = "midp
 	# by this point we should have an Mx vector with no NAs: no more need for Nx,Dx
 	# we want to be able to accept 0s...
 	
-	
 	# N is just used for counting, to save space
 	N                   <- length(Mx) # 
-	Widths              <- diff(ages)
-    Widths              <- c(Widths, Widths[N-1])
+	Widths              <- c(1, diff(ages))
+    
     # define character for Age in formatted lifetable
 	if (all(Widths == 1)){
         Age <- as.character(ages)
@@ -231,9 +230,10 @@ function(Nx=NULL, Dx=NULL, Mx = Dx/Nx, ages = 0:(length(Mx)-1), axmethod = "midp
 	px 			        <- 1 - qx
 	
     lx                  <- c(radix, radix * cumprod(px))[1:N]
-	dx 			        <- c(-diff(lx),lx[N])
+	dx 			        <- -diff(lx)
+	dx[N] 		        <- lx[N]
 	
-	Lx 	                <- c(Widths[1:(N - 1)] * lx[2:N] + ax[1:(N - 1)] * dx[1:(N - 1)], lx[N] * ax[N])
+	Lx 	                <- c(Widths[1:(N - 1)] * lx[2:N] + ax[1:(N - 1)] * dx[1:(N - 1)],lx[N] / mx[N])
 	Lx[is.infinite(Lx)] <- 1
 	Lx[is.na(Lx)] 	    <- 0
 	
@@ -242,8 +242,9 @@ function(Nx=NULL, Dx=NULL, Mx = Dx/Nx, ages = 0:(length(Mx)-1), axmethod = "midp
 	ex[N]               <- ifelse(mx[N] == 0, ax[N], {1 / mx[N]})
 	
 	# Sx is the pertinent output for projection matrices
-	Sx   	            <- c((Lx[2:N] / Widths[2:N]) / (Lx[1:(N-1)] / Widths[1:(N - 1)]), Tx[N] / Tx[(N - 1)])
-
+    Sx 			        <- vector(length = N)
+	Sx[1:(N - 1)] 	    <- (Lx[2:N] / Widths[2:N]) / (Lx[1:(N-1)] / Widths[1:(N - 1)])
+	Sx[N]       	    <- Tx[N] / Tx[(N - 1)]
 	# two not-very satisfying, and possibly redundant, substitutions:
 	Sx[Lx == 0]   	    <- 0
 	Sx[is.na(Sx)] 	    <- 0

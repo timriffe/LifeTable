@@ -137,11 +137,10 @@ function(Nx=NULL, Dx=NULL, Mx = Dx/Nx, ages = 0:(length(Mx)-1), axmethod = "midp
 	# by this point we should have an Mx vector with no NAs: no more need for Nx,Dx
 	# we want to be able to accept 0s...
 	
-	
 	# N is just used for counting, to save space
 	N                   <- length(Mx) # 
-	Widths              <- diff(ages)
-    Widths              <- c(Widths, Widths[N-1])
+	Widths              <- c(1, diff(ages))
+    
     # define character for Age in formatted lifetable
 	if (all(Widths == 1)){
         Age <- as.character(ages)
