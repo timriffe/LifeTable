@@ -141,7 +141,7 @@ function(Nx=NULL, Dx=NULL, Mx = Dx/Nx, ages = 0:(length(Mx)-1), axmethod = "midp
 	# N is just used for counting, to save space
 	N                   <- length(Mx) # 
 	Widths              <- diff(ages)
-    Widths              <- c(Widths, Widths[N-1])
+    Widths              <- c(Widths, Widths[N - 1])
     # define character for Age in formatted lifetable
 	if (all(Widths == 1)){
         Age <- as.character(ages)
@@ -193,7 +193,7 @@ function(Nx=NULL, Dx=NULL, Mx = Dx/Nx, ages = 0:(length(Mx)-1), axmethod = "midp
 		}
 		mx[Ind0]    <- Imp
 	}
-	
+	ax <- NULL
 	if (length(axmethod) == 1){
 		if (axmethod %in% c("keyfitz", "schoen", "midpoint", "preston")){
 			# here, the ax iteration is externalized to axEstimate()
@@ -211,8 +211,8 @@ function(Nx=NULL, Dx=NULL, Mx = Dx/Nx, ages = 0:(length(Mx)-1), axmethod = "midp
 	if (is.numeric(axmethod) & length(axmethod) == N) {
 		ax <- axmethod
 	}
-	# last default
-	if (!exists("ax")){
+	# last default # sex = "male"
+	if (is.null(ax)){
 		ax <- axEstimate(Mx = mx, n = Widths, axsmooth = axsmooth, method = "midpoint", sex = sex, verbose = verbose)
 		Verb(verbose, "axmethod must be specified either as 'schoen','keyfitz','midpoint'\nor as a numeric vector the same length as Nx.\nThis wasn't the case, so the function defaulted to the midpoint method.")
 	}
