@@ -107,7 +107,7 @@
 
 LT <-
 function(Nx=NULL, Dx=NULL, Mx = Dx/Nx, ages = 0:(length(Mx)-1), axmethod = "midpoint", sex = "female", 
-		mxsmooth = TRUE, axsmooth = TRUE, radix = 1, verbose = TRUE){
+		mxsmooth = TRUE, axsmooth = TRUE, radix = 1, verbose = TRUE, ...){
 	# the verbose function:
 	Verb <- function(v, x){
 		if (v) {
@@ -115,7 +115,10 @@ function(Nx=NULL, Dx=NULL, Mx = Dx/Nx, ages = 0:(length(Mx)-1), axmethod = "midp
 		}
 	}
 	# first a series of checks, messages and imputations to make sure the given Dx&Nx *or* Mx values are viable
-   
+    otherArgs <- list(...)
+    if (length(otherArgs)>1){
+        Verb(verbose,paste(unlist(otherArgs),collapse = ", "),"is/are not arguments to this function,\nalthough they may have been in the past. In that case, consider them deprecated")
+    }
 	if (length(Mx) == 0){
 		# two checks that will stop the function
 		# 1) in absence of Mx, need both Dx and Nx
