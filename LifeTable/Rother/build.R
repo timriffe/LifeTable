@@ -26,7 +26,7 @@ system(paste0("cd ", parent.path, " \n git checkout gh-pages \n git add help * \
 
 # ---------------------------------------------
 library(devtools)
-install_github("LifeTable", subdir = "LifeTable", username = "timriffe",ref="master")
+install_github("timriffe/LifeTable", subdir = "LifeTable",ref="master")
 args(install_github)
 library(LifeTable, lib="/home/triffe/R/x86_64-pc-linux-gnu-library/2.13")
 data(UKRmales1965)
