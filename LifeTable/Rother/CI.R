@@ -100,3 +100,4 @@ return(list(e0 = e0,MCCI = MCCI, ChiangCI = ChiangCI))
 }
 
 e0.CI(Nx, Dx,mx,ax,sex="male")
+

@@ -3,8 +3,8 @@
 ###############################################################################
 
 library(devtools)
-load_all("/home/triffe/git/LifeTable/LifeTable")
-document("/home/triffe/git/LifeTable/LifeTable")
+load_all("/home/tim/git/LifeTable/LifeTable")
+document("/home/tim/git/LifeTable/LifeTable")
 
 library(tools)
 parent.path <- "/home/triffe/git/LifeTable"

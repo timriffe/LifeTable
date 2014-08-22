@@ -26,11 +26,3 @@ Depends:
 Imports:
     MortalitySmooth,
     svcm
-Collate:
-    'LT.R'
-    'axEstimate.R'
-    'axKeyfitz.R'
-    'axMidpoint.R'
-    'axPreston.R'
-    'axSchoen.R'
-    'AKm02a0.R'
