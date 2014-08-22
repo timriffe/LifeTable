@@ -22,8 +22,10 @@ dx2lx <- function(dx){
 #' 
 #' @return qx vector of single age conditional death probabilities
 #' 
+#' @importFrom compiler cmpfun
+#' 
 #' @export
-lx2qx <- cmpfun(function(lx){
+lx2qx <- compiler::cmpfun(function(lx){
             c(1-(lx[2:length(lx)] / lx[1:(length(lx)-1)]),1)
         })
 
@@ -35,8 +37,10 @@ lx2qx <- cmpfun(function(lx){
 #' 
 #' @return lx vector of the radix-1 survival function from age 0 to omega.
 #' 
+#' @importFrom compiler cmpfun
+
 #' @export
-qx2lx <- cmpfun(function(qx){
+qx2lx <- compiler::cmpfun(function(qx){
             c(1,cumprod(1-qx)[-length(qx)])
         })
 
@@ -85,8 +89,10 @@ qx2dx <- function(qx){
 #' 
 #' @return ax vector of Chiang's ax.
 #' 
+#' @importFrom compiler cmpfun
+#' 
 #' @export
-dx2ax <- cmpfun(function(dx,sex= "m"){
+dx2ax <- compiler::cmpfun(function(dx,sex= "m"){
             qx <- dx2qx(dx)
             c(AKq02a0(qx[1],sex),rep(.5,length(dx)-1))
         })
