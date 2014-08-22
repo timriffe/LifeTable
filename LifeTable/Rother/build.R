@@ -1,7 +1,7 @@
 
 # Author: triffe
 ###############################################################################
-
+install.packages("svcm")
 library(devtools)
 load_all("/home/tim/git/LifeTable/LifeTable")
 document("/home/tim/git/LifeTable/LifeTable")
