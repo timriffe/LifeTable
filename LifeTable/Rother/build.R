@@ -29,6 +29,7 @@ library(devtools)
 install_github("timriffe/LifeTable", subdir = "LifeTable",ref="master")
 args(install_github)
 library(LifeTable, lib="/home/triffe/R/x86_64-pc-linux-gnu-library/2.13")
+library(LifeTable)
 data(UKRmales1965)
 Nx <- UKRmales1965[, 3]
 Dx <- UKRmales1965[, 2]

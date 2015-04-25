@@ -99,5 +99,8 @@ e0.CI <- function(Nx, Dx, mx, sex, ages = 0:(length(mx)-1), ax = NULL, iter = 10
 return(list(e0 = e0,MCCI = MCCI, ChiangCI = ChiangCI))
 }
 
-e0.CI(Nx, Dx,mx,ax,sex="male")
+ScaleFactor <- .0005
 
+(CI <- e0.CI(Nx*ScaleFactor, Dx*ScaleFactor,mx = Dx/Nx,ax=NULL,sex="male", iter = 5e4))
+
+sum(Nx) * ScaleFactor
