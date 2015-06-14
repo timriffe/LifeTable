@@ -159,7 +159,9 @@ function(Nx=NULL, Dx=NULL, Mx = Dx/Nx, ages = 0:(length(Mx)-1), axmethod = "midp
 	if(!is.null(Nx) & !is.null(Dx) & mxsmooth){
 		# Giancarlo's package. I recommend either supplying an already-smoothed Mx vector (for complete control)
 		# or else supplying Dx and Nx and setting mxsmooth to TRUE.
-		fitBIC 			<- Mort1Dsmooth(x = ages.mids.pre, y = Dx, offset = log(Nx))
+	    # define some reasonable weights to block out certain cells if necessary
+	    w <- ifelse(Dx/Nx == 0 | is.null(Dx/Nx) | is.na(Dx/Nx) | log(Nx) < 0, 0, 1)
+		fitBIC 			<- Mort1Dsmooth(x = ages.mids.pre, y = Dx, offset = log(Nx), w = w)
 		Mx[2:N] 		<- (fitted(fitBIC) / Nx)[2:N]
 	}
 	
@@ -188,12 +190,13 @@ function(Nx=NULL, Dx=NULL, Mx = Dx/Nx, ages = 0:(length(Mx)-1), axmethod = "midp
 		Verb(verbose, paste("\n\n*there were some ages (", ages[Ind0],
                         ") with no mortality.\nValues are imputed for calculating a(x), but the zeros are kept for the rest of the lifetable.\n"))
 		span        <- ifelse(N > 30,.15,.4)
-		logMx       <- log(Mx)
+		logMx       <- log(mx)
 		logMx[is.infinite(logMx)] <- NA
 		Imp         <- exp(predict(loess(logMx ~ ages.mids.pre, span = span, control = loess.control(surface = "interpolate")), newdata = ages))[Ind0]
 		if (any(is.na(Imp))){
-			Imp     <- exp(spline(ages.mids.pre, logMx, xmin = 0, xmax = max(ages))$y[Ind0])
+			Imp     <- exp(spline(ages.mids.pre, logMx, xout=ages.mids.pre)$y[Ind0])
 		}
+		
 		mx[Ind0]    <- Imp
 	}
 	ax <- NULL
