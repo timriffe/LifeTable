@@ -224,7 +224,7 @@ function(Nx=NULL, Dx=NULL, Mx = Dx/Nx, ages = 0:(length(Mx)-1), axmethod = "midp
 	}
 	
 	# if zeros were imputed for ax estimation, then we put them back for the rest of the calculations
-	if (is.null(Ind0)){
+	if (!is.null(Ind0)){
 		mx[Ind0]        <- 0
 	}
     
