@@ -153,6 +153,7 @@ function(Nx=NULL, Dx=NULL, Mx = Dx/Nx, ages = 0:(length(Mx)-1), axmethod = "midp
         Age <- c(0, 
 				paste(ages[2:(N - 1)], ages[2:(N - 1)] + Widths[-1] - 1, sep = "-"), 
 				paste0(ages[N], "+"))
+		Widths          <- c(Widths, Widths[N - 1])
     }
     
 	ages.mids.pre 		<- ages + Widths / 2
