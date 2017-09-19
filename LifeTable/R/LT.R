@@ -144,13 +144,15 @@ function(Nx=NULL, Dx=NULL, Mx = Dx/Nx, ages = 0:(length(Mx)-1), axmethod = "midp
 	# N is just used for counting, to save space
 	N                   <- length(Mx) # 
 	Widths              <- diff(ages)
-    Widths              <- c(Widths, Widths[N - 1])
     # define character for Age in formatted lifetable
 	if (all(Widths == 1)){
-        Age <- as.character(ages)
-        Age[N] <- paste0(Age[N],"+")
+        Age             <- as.character(ages)
+        Age[N]          <- paste0(Age[N], "+")
+		Widths          <- c(Widths, Widths[N - 1])
     } else {
-        Age <- c(0,paste(ages[2:(N - 1)], ages[2:(N - 1)] + Widths - 1,sep="-"),paste0(Age[N],"+"))
+        Age <- c(0, 
+				paste(ages[2:(N - 1)], ages[2:(N - 1)] + Widths[-1] - 1, sep = "-"), 
+				paste0(ages[N], "+"))
     }
     
 	ages.mids.pre 		<- ages + Widths / 2

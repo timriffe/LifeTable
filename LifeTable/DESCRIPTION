@@ -1,8 +1,8 @@
 Package: LifeTable
 Type: Package
 Title: LifeTable, a package with a small set of useful lifetable functions.
-Version: 2.0
-Date: 2013-11-20
+Version: 2.0.1
+Date: 2017-9-19
 Author: Tim Riffe
 Maintainer: Tim Riffe <tim.riffe@gmail.com>
 Description: The main function, \code{LT()}, is rather versatile, accepting
