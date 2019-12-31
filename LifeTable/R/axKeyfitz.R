@@ -42,7 +42,7 @@
 #' @export
 
 axKeyfitz <-
-function(Mx, n, axsmooth = TRUE){
+function(Mx, n, axsmooth = FALSE){
 	# iterative ax-dx process decribed on page 44-45 of 
 	# Preston et al, Demography: Measuring and Modelling Population Processes. Blackwell Publishing, 2001
 	N <- length(Mx)
@@ -60,16 +60,13 @@ function(Mx, n, axsmooth = TRUE){
 	}
 	axit        <- .5 * n
 	axit[1] <- .07 + 1.7 * Mx[1]
-	for (i in 1:7){
+	for (j in 1:7){
 		qx              <- (n * Mx) / (1 + (n - axit) * Mx)
-		qx[length(Mx)]  <- 1
+		qx[N]           <- 1
 		px              <- 1 - qx
-		lx              <- 1 # typically radix would go here, but it makes no difference since values don't pass on.
-		for (i in 2:length(Mx))	{ 
-            lx[i]   <- lx[i - 1] * px[i - 1] 
-        }
-		dx          <- -diff(lx)
-		for (i in 2:(length(Mx) - 1)){
+		lx              <- c(1,cumprod(px))[1:N]
+		dx              <- qx * lx
+		for (i in 2:(N - 1)){
 			axit[i] <- (-(n[i - 1] / 24) * dx[i - 1] + (n[i] / 2) * dx[i] + (n[i + 1] / 24) * dx[i + 1]) / dx[i]
         }
 		
@@ -84,4 +81,7 @@ function(Mx, n, axsmooth = TRUE){
 	axit[1]     <- .07 + 1.7 * Mx[1]
 	return(axit)
 }
+
+
+
 
