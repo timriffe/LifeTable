@@ -1,10 +1,10 @@
 
 # Author: triffe
 ###############################################################################
-install.packages("svcm")
+
 library(devtools)
-load_all("/home/tim/git/LifeTable/LifeTable")
-document("/home/tim/git/LifeTable/LifeTable")
+load_all("LifeTable")
+document("LifeTable")
 
 library(tools)
 parent.path <- "/home/triffe/git/LifeTable"
